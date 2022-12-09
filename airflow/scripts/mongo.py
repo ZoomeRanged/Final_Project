@@ -3,11 +3,6 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
 
-
-
-    
-user = 'ZoomeRanged'
-password = 'sitorus1992oO'
 CONNECTION_STRING = 'mongodb+srv://ZoomeRanged:sitorus1992oO@cluster0.zbsedde.mongodb.net/?retryWrites=true&w=majority'
 
 conn = MongoClient(CONNECTION_STRING)
