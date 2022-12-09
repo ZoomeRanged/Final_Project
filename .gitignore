@@ -1,0 +1,6 @@
+airflow/dags
+airflow/logs
+airflow/plugins
+
+spark/app
+spark/resources
