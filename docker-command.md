@@ -21,7 +21,7 @@ docker-compose up -d
 
 # postgresql
 ``
-docker run --name postgres-ds9 --network=default_network -p 3306:3306 -e POSTGRES_PASSWORD=admin -d postgres
+docker run --name postgres-ds9 --network=default_network -p 5432:5432 -e POSTGRES_PASSWORD=admin -d postgres
 ``
 
 # mysql
