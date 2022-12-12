@@ -7,7 +7,7 @@ CONNECTION_STRING = 'mongodb+srv://ZoomeRanged:sitorus1992oO@cluster0.zbsedde.mo
 
 conn = MongoClient(CONNECTION_STRING)
     
-engine = create_engine('postgresql+psycopg2://postgres:admin@localhost:5432/postgres')
+engine = create_engine('postgresql+psycopg2://postgres:admin@localhost:5434/postgres')
     
 
     
