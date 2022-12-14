@@ -1,11 +1,10 @@
-from kafka import KafkaProducer
-import requests
+from kafka.producer import KafkaProducer
 import json
+import requests
 import datetime
 import time
 
 
-# assign currency pair
 currency_pair = {'EURUSD': 'US Dollar',
                 'EURGBP': 'Pound Sterling',
                 'USDEUR': 'Euro'}
@@ -13,7 +12,7 @@ currency_pair = {'EURUSD': 'US Dollar',
 
 # create function to get result from API
 def get_result(currency):
-    url = 'https://www.freeforexapi.com/api/live?pairs=EURUSD,EURGBP,USDEUR'.format(currency)
+    url = 'https://www.freeforexapi.com/api/live?pairs={}'.format(currency)
     response = requests.get(url).json()
     return response
 
@@ -32,9 +31,9 @@ def extract(input, cur_id, cur_name):
 
     return result_dict
 
-
 # connect to Kafka Producer
-producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+bootstrap = ['localhost:9092']
+producer = KafkaProducer(bootstrap_servers=bootstrap)
 
 
 # execute the API extraction
@@ -42,5 +41,5 @@ while True:
     for key, value in currency_pair.items():
         link = dict(get_result(key))['rates']
         task = extract(link, key, value)
-        producer.send('TopicCurrency', json.dumps(task).encode('utf-8'))
-    time.sleep(60)
+        producer.send('TopicCurrency', task)
+    time.sleep(10)

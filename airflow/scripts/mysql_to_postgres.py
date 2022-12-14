@@ -1,77 +1,56 @@
 
 from pyspark.sql import SparkSession
-import findspark
-import pyspark
-findspark.init()
 
 
 
-CONNECTOR_TYPE = 'com.mysql.jdbc.Driver'
-SQL_USERNAME = 'root'
-SQL_PASSWORD = 'admin'
-SQL_DBNAME = 'Final_Project'
-SQL_SERVERNAME = 'localhost'
-
-url = "jdbc:mysql://host.docker.internal:3306/Final_Project"
-
-table_name1 = "home_credit_default_risk_application_test"
-table_name2 = "home_credit_default_risk_application_train"
-
-spark = SparkSession.builder.config('spark.jars', '/opt/bitnami/spark/jars/mysql-connector-j-8.0.31.jar').appName('app').getOrCreate()
 
 
-df = spark.read\
-        .format('jdbc') \
-        .option("driver", "com.mysql.jdbc.Driver") \
-        .option("url", url) \
-        .option("dbtable", table_name1) \
-        .option("user", SQL_USERNAME) \
-        .option("password", SQL_PASSWORD) \
-        .load()
+#read data from mysql DB
+if __name__ == '__main__':
+        spark = SparkSession.builder.config('spark.jars', '/usr/local/spark/resources/mysql-connector-j-8.0.31.jar, /usr/local/spark/resources/postgresql-42.5.1.jar').appName('app').getOrCreate()
+        app_test = spark.read\
+                .format('jdbc') \
+                .option("driver", "com.mysql.jdbc.Driver") \
+                .option("url", "jdbc:mysql://host.docker.internal:3306/Final_Project") \
+                .option("dbtable", "home_credit_default_risk_application_test_ok") \
+                .option("user", 'root') \
+                .option("password", 'admin') \
+                .load()
+                
+        app_train = spark.read\
+                .format('jdbc') \
+                .option("driver", "com.mysql.jdbc.Driver") \
+                .option("url", "jdbc:mysql://host.docker.internal:3306/Final_Project") \
+                .option("dbtable", "home_credit_default_risk_application_train_ok") \
+                .option("user", 'root') \
+                .option("password", 'admin') \
+                .load()
         
-df1 = spark.read\
-        .format('jdbc') \
-        .option("driver", "com.mysql.jdbc.Driver") \
-        .option("url", url) \
-        .option("dbtable", table_name2) \
-        .option("user", SQL_USERNAME) \
-        .option("password", SQL_PASSWORD) \
-        .load()
-
-
-
- 
-#write to postgres
-CONNECTOR_TYPE = 'org.postgresql.Driver'
-PSQL_USERNAME = 'postgres'
-PSQL_PASSWORD = 'admin'
-PSQL_DBNAME = 'postgres'
-PSQL_SERVERNAME = 'localhost'
-PSQL_Port = '5432'
-
-url_psql = "jdbc:postgresql://host.docker.internal:3306/postgres"
-spark = SparkSession.builder.config('spark.jars', '/opt/bitnami/spark/jars/mysql-connector-j-8.0.31.jar').appName('app').getOrCreate()
-
-table1 = 'Application_Test'
-table2 = 'Apllication_train'
-
-
         
-df.write\
-        .format('jdbc') \
-        .option('driver', CONNECTOR_TYPE) \
-        .option("url", url_psql) \
-        .option("dbtable", table1) \
-        .option("user", PSQL_USERNAME) \
-        .option("password", PSQL_PASSWORD) \
-        .save()
+
+
+        #write to postgres DB
+        
+        
+
+        app_test.write\
+                .format('jdbc') \
+                .option('driver', 'org.postgresql.Driver') \
+                .option("url", "jdbc:postgresql://host.docker.internal:5434/postgres") \
+                .option("dbtable", "home_credit_default_risk_application_test_ok") \
+                .option("user", 'postgres') \
+                .option("password", 'admin') \
+                .mode("overwrite") \
+                .save()
+        
+        app_train.write\
+                .format('jdbc') \
+                .option('driver', 'org.postgresql.Driver') \
+                .option("url", "jdbc:postgresql://host.docker.internal:5434/postgres") \
+                .option("dbtable", "home_credit_default_risk_application_train_ok") \
+                .option("user", 'postgres') \
+                .option("password", 'admin') \
+                .mode('overwrite') \
+                .save()
        
-df1.write\
-        .format('jdbc') \
-        .option('driver', CONNECTOR_TYPE) \
-        .option("url", url_psql) \
-        .option("dbtable", table2) \
-        .option("user", PSQL_USERNAME) \
-        .option("password", PSQL_PASSWORD) \
-        .save()
 

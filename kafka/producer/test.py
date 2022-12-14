@@ -1,13 +1,18 @@
-from kafka import KafkaProducer
-from forex_python.converter import CurrencyRates
+import requests
+import time
 
-producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
-cr = CurrencyRates()
+# data = []
+def get_stream(url):
+    s = requests.Session()
 
-# Replace USD and EUR with the desired currency codes
-usd_eur_rate = cr.get_rate("USD", "EUR")
+    with s.get(url, headers=None, stream=True) as resp:
+        for line in resp.iter_lines():
+            if line:
+                print(line)
+                # data.append(line)
 
-# Replace "forex-rates" with the desired topic name
-producer.send("TopicCurrency", usd_eur_rate)
+url = 'https://www.freeforexapi.com/api/live?pairs=EURUSD,EURGBP,USDEUR'
 
-print(usd_eur_rate)
+while True:
+    get_stream(url)
+    time.sleep(60)
