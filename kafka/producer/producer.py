@@ -33,7 +33,7 @@ def extract(input, cur_id, cur_name):
 
 # connect to Kafka Producer
 bootstrap = ['localhost:9092']
-producer = KafkaProducer(bootstrap_servers=bootstrap)
+producer = KafkaProducer(bootstrap_servers=bootstrap, api_version=(0,10,1))
 
 
 # execute the API extraction
@@ -42,4 +42,4 @@ while True:
         link = dict(get_result(key))['rates']
         task = extract(link, key, value)
         producer.send('TopicCurrency', task)
-    time.sleep(10)
+    time.sleep(60)
