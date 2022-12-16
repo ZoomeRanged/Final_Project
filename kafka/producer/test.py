@@ -1,18 +1,16 @@
+from kafka import KafkaProducer
 import requests
-import time
 
-# data = []
-def get_stream(url):
-    s = requests.Session()
+# Create a Kafka producer
+producer = KafkaProducer(
+    bootstrap_servers=["localhost:9092"], api_version=(0, 10),
+    value_serializer=lambda v: str(v).encode("utf-8"),
+)
 
-    with s.get(url, headers=None, stream=True) as resp:
-        for line in resp.iter_lines():
-            if line:
-                print(line)
-                # data.append(line)
+# Fetch data from the API
+response = requests.get('https://www.freeforexapi.com/api/live?pairs=EURUSD,EURGBP,USDEUR')
 
-url = 'https://www.freeforexapi.com/api/live?pairs=EURUSD,EURGBP,USDEUR'
-
-while True:
-    get_stream(url)
-    time.sleep(60)
+# Send the data to the "my-topic" topic
+for line in response.iter_lines():
+    producer.send("TopicCurrency", value=line)
+    print(line)
