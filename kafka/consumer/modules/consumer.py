@@ -22,7 +22,7 @@ class Consumer(KafkaConsumer):
     def __init__(self, bootstrap_servers: str, topic: str, db_config: dict, tablename: str):
         super().__init__(
             topic,
-            bootstrap_servers = [bootstrap_servers],
+            bootstrap_servers = ["kafka:9092"],
             value_deserializer = self._deserializer
         )
         self.active = False

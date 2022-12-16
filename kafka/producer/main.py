@@ -7,7 +7,6 @@ from modules import producer
 def main(worker: int, bootstrap_servers: str, topic: str, logger: logging.Logger):
     """
     Main Function
-
     Starting Producer to create dummy transaction funnel and send the data to Kafka topics.
     """
     logger.info(f"Running {worker} Producer. Topic '{topic}' in '{bootstrap_servers}'")

@@ -16,7 +16,7 @@ def main(bootstrap_servers: str, topic: str, tablename: str, logger: logging.Log
         topic = topic,
         db_config = {
             # "host": "host.docker.internal",
-            "host": "localhost",
+            "host": "host.docker.internal",
             "port": "5434",
             "user": "postgres",
             "password": "admin"

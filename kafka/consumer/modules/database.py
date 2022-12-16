@@ -2,6 +2,13 @@ from sqlalchemy import create_engine, text, engine
 import logging
 
 
+db = 'postgres'
+port = 5434
+user = 'postgres'
+password = 'admin'
+host = 'host.docker.internal'
+tablename = 'currencies'
+
 def get_engine(host: str, port: int, user: str, password: str):
     db_uri = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/postgres"
     logging.info(f"[DATABASE CONNECT]: url={db_uri}")
