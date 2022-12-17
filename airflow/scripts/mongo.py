@@ -7,7 +7,7 @@ CONNECTION_STRING = 'mongodb+srv://ZoomeRanged:sitorus1992oO@cluster0.zbsedde.mo
 
 conn = MongoClient(CONNECTION_STRING)
     
-engine = create_engine('postgresql+psycopg2://postgres:admin@localhost:5434/postgres')
+engine = create_engine('postgresql+psycopg2://postgres:admin@host.docker.internal:5434/postgres')
     
 
     
@@ -66,8 +66,8 @@ companies_df.head()
 
     
    
-companies_df.to_sql('companies', engine, if_exists='replace')
-df_zips.to_sql('zips', engine, if_exists='replace')
+companies_df.to_sql('companies1', engine, if_exists='replace')
+df_zips.to_sql('zips1', engine, if_exists='replace')
 
     
     
